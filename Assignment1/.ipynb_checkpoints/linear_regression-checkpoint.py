@@ -5,7 +5,7 @@ class LinearRegression():
     def __init__(self):
         # NOTE: Feel free to add any hyperparameters 
         # (with defaults) as you see fit
-        self.learning_rate = 0.001
+        self.learning_rate = 0.05
         self.epochs = 100
         self.weights = None
         self.losses, self.train_accuracies = [], []
@@ -21,21 +21,20 @@ class LinearRegression():
         """
         # TODO: Implement
         # Dataen kommer uten bias så vi legger til en bias kolonne
-        m = y.shape[0]
-        bias = np.ones((m, 1))
-        X_data = np.hstack((bias, np.array(X).reshape((m, 1)))) #Endret også slik at de får riktige dimensjoner til numpy regning
-        y_data = np.array(y).reshape((m, 1)) #Samme her også
+        m = y.shape
+        bias = np.transpose(np.ones(m))
+        X_data = np.hstack((bias, X))
         
-        self.weights = np.zeros((X_data.shape[1], 1)) #Initialisering
-        theta = self.weights
+        self.weights = np.zeros(X_data[0].shape) #Initialisering
         
-        for i in range(self.epochs):
-            gradient = 2/m * np.matmul(np.transpose(X_data), np.matmul(X_data, theta) - y_data)
-            theta = theta - self.learning_rate*gradient
-        self.weights = theta
-
-        #Neste forsøk er å dele datasettet i to og se om den kan klare det fremdeles da!
-
+        theta = np.transpose(self.weights)
+        return X_data[0].shape
+        
+        #for i in range(self.epochs):
+            #np.matmul(X_data, np.array([[1],[2]])) - y
+            #gradient = 2/m * np.matmul(np.transpose(X_data), np.matmul(X_data, theta) - y)
+            #theta = theta - self.learning_rate*gradient
+        #self.weights = np.transpose(theta) 
     
     def predict(self, X):
         """
@@ -51,9 +50,7 @@ class LinearRegression():
             A length m array of floats
         """
         # TODO: Implement
-        X_data = np.array(X).reshape((X.shape[0], 1))
-        print(self.weights[0])
-        y_pred = np.matmul(X_data, self.weights[1]) + self.weights[0]
+        y_pred = np.matmul(X, self.weights[1:]) + self.weights[0]
         return y_pred
 
 
