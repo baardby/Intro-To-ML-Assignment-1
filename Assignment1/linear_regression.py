@@ -34,7 +34,7 @@ class LinearRegression():
             theta = theta - self.learning_rate*gradient
         self.weights = theta
 
-        #Neste forsøk er å dele datasettet i to og se om den kan klare det fremdeles da!
+        print(f"Oppgave 2a) Modellen kom fram til følgende lineære sammenheng mellom energi, E, og nettaktivitet, x: Energi = {self.weights[1][0]:.2f} x + {self.weights[0][0]:.2f}")
 
     
     def predict(self, X):
@@ -52,7 +52,6 @@ class LinearRegression():
         """
         # TODO: Implement
         X_data = np.array(X).reshape((X.shape[0], 1))
-        print(self.weights[0])
         y_pred = np.matmul(X_data, self.weights[1]) + self.weights[0]
         return y_pred
 
