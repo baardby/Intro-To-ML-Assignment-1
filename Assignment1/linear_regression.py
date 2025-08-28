@@ -6,7 +6,7 @@ class LinearRegression():
         # NOTE: Feel free to add any hyperparameters 
         # (with defaults) as you see fit
         self.learning_rate = 0.001
-        self.epochs = 100
+        self.epochs = 5000
         self.weights = None
         self.losses, self.train_accuracies = [], []
         
