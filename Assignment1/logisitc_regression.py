@@ -13,8 +13,8 @@ def compute_gradient(theta, X, y):
 class LogisticRegression():
 
     def __init__(self):
-        self.learning_rate = 0.001
-        self.epochs = 5000
+        self.learning_rate = 0.01
+        self.epochs = 100
         self.weights = None
         self.losses, self.train_accuracies = [], []
 
@@ -24,7 +24,7 @@ class LogisticRegression():
     def fit_lg(self, trainData):
         #Forandrer formatet på dataen til numpy
         X = trainData[['x0', 'x1']].to_numpy()
-        y = trainData['y'].to_numpy()
+        y = trainData[['y']].to_numpy()
 
         #X kommer uten biaskolonne så legger til det
         bias = np.ones((X.shape[0], 1))
@@ -40,4 +40,10 @@ class LogisticRegression():
 
 
     def predict_lg(self, testData):
-        pass
+        X = testData[['x0', 'x1']].to_numpy()
+        bias = np.ones((X.shape[0], 1))
+        X = np.hstack((bias, X))
+
+        y_pred = sigmoid_lg(self.weights, X) #GIR VELDIG SMÅ VERDIER. NESTEN SÅ DEN IKKE PRØVER
+        print(y_pred)
+        return [1 if _y > 0.5 else 0 for _y in y_pred.flatten()]
