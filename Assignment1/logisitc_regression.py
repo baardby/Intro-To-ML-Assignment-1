@@ -43,7 +43,7 @@ class LogisticRegression():
         X = testData[['x0', 'x1']].to_numpy()
         bias = np.ones((X.shape[0], 1))
         X = np.hstack((bias, X))
+        #print(np.matmul(X, self.weights))
 
         y_pred = sigmoid_lg(self.weights, X) #GIR VELDIG SMÅ VERDIER. NESTEN SÅ DEN IKKE PRØVER
-        print(y_pred)
         return [1 if _y > 0.5 else 0 for _y in y_pred.flatten()]
