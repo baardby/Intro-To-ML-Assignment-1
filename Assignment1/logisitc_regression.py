@@ -14,14 +14,14 @@ class LogisticRegression():
 
     def __init__(self):
         self.learning_rate = 0.01
-        self.epochs = 100
+        self.epochs = 10000
         self.weights = None
         self.losses, self.train_accuracies = [], []
 
     def compute_loss_lg(self, y, y_pred):
         pass
 
-    def fit_lg(self, trainData):
+    def fit_lg(self, trainData, alteredData):
         #Forandrer formatet på dataen til numpy
         X = trainData[['x0', 'x1']].to_numpy()
         y = trainData[['y']].to_numpy()
@@ -29,6 +29,13 @@ class LogisticRegression():
         #X kommer uten biaskolonne så legger til det
         bias = np.ones((X.shape[0], 1))
         X = np.hstack((bias, X))
+        if alteredData:
+            dummy = X[:, 0] * X[:, 1]
+            dummy = dummy.reshape((y.shape[0], 1))
+            X = np.hstack((X, dummy))
+            print("hei")
+        #bias = np.ones((X.shape[0], 1))
+        #X = np.hstack((bias, X))
 
         self.weights = np.zeros((X.shape[1], 1))
 
@@ -39,11 +46,17 @@ class LogisticRegression():
         self.weights = theta
 
 
-    def predict_lg(self, testData):
+    def predict_lg(self, testData, alteredData):
         X = testData[['x0', 'x1']].to_numpy()
         bias = np.ones((X.shape[0], 1))
         X = np.hstack((bias, X))
-        #print(np.matmul(X, self.weights))
+        if alteredData:
+            dummy = X[:, 0] * X[:, 1]
+            dummy = dummy.reshape((X.shape[0], 1))
+            X = np.hstack((X, dummy))
+        #bias = np.ones((X.shape[0], 1))
+        #X = np.hstack((bias, X))
 
         y_pred = sigmoid_lg(self.weights, X) #GIR VELDIG SMÅ VERDIER. NESTEN SÅ DEN IKKE PRØVER
+        #print(y_pred)
         return [1 if _y > 0.5 else 0 for _y in y_pred.flatten()]
