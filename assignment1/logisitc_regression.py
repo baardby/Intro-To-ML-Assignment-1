@@ -49,11 +49,23 @@ class LogisticRegression():
         theta = self.weights
 
         for i in range(self.epochs):
+            #Gradient descent
             theta = theta - self.learning_rate*compute_gradient(theta, X, y)
+
+            #Loss
+            """
+            loss = 0
+            for i in range(len(y)):
+                loss += y[i]*np.log(sigmoid_lg(theta, X[i])) + (1 - y[i])*np.log(1 - sigmoid_lg(theta, X[i]))
+            self.losses.append(-loss/len(y))
+            """
+            #self.losses.append(-np.mean(y*np.log(sigmoid_lg(theta, X)) + (1 - y)*np.log(1 - sigmoid_lg(theta, X))))
+            
         self.weights = theta
 
 
     def predict_lg(self, testData, alteredData):
+        y = testData['y'].to_numpy()
         
         if alteredData == 0: #Ujustert data
             X = testData[['x0', 'x1']].to_numpy()
@@ -73,4 +85,6 @@ class LogisticRegression():
             X = np.hstack((bias, X))
 
         y_pred = sigmoid_lg(self.weights, X)
-        return [1 if _y > 0.5 else 0 for _y in y_pred.flatten()]
+        y_classified = [1 if _y > 0.5 else 0 for _y in y_pred.flatten()]
+        print(np.mean(y_classified == y))
+        return y_pred
